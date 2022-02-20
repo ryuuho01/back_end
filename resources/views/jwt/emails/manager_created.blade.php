@@ -18,7 +18,7 @@
   <br>
   以下のURLよりログインし、店舗の作成を行って下さい。<br>
   <br>
-  <a href="http://172.31.0.226/login">ログイン画面へ</a><br>
+  <a href="http://3.112.48.148/login">ログイン画面へ</a><br>
   <br>
   <span>Rese</span>
 

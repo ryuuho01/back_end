@@ -126,7 +126,7 @@ class AuthController extends Controller
             if (User::where("email", $user->verify_email_address)->first()) {
                 // $params['result'] = "exist";
                 Log::info('Verify Exist: ' . $user->verify_email_address);
-                return redirect()->away('http://172.31.0.226/registalready');
+                return redirect()->away('http://3.112.48.148/registalready');
                 //実際は登録の時点でemailのuniqueを確認しているので、このエラーは起きないはず
             } else {
                 // 仮メールアドレスを本メールに移動
@@ -147,11 +147,11 @@ class AuthController extends Controller
                 $user->save();
                 // $params['result'] = "success";
                 Log::info('Verify Success: ' . $user);
-                return redirect()->away('http://172.31.0.226/thanks');
+                return redirect()->away('http://3.112.48.148/thanks');
             }
         } else {
             Log::info('Verify Not Found: token=' . $token);
-            return redirect()->away('http://172.31.0.226/registerror');
+            return redirect()->away('http://3.112.48.148/registerror');
         }
     }
 
@@ -287,9 +287,9 @@ class AuthController extends Controller
         $user = User::where('verify_token', $token)->where('verify_date', '>', $verify_limit)->first();
 
         if ($user) {
-            return redirect()->away('http://172.31.0.226/input_password/?id='.$token);
+            return redirect()->away('http://3.112.48.148/input_password/?id='.$token);
         } else {
-            return redirect()->away('http://172.31.0.226/registerror');
+            return redirect()->away('http://3.112.48.148/registerror');
         }
     }
 
