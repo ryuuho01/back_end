@@ -4,8 +4,10 @@
 <br>
 以下のURLをクリックしパスワードを変更してください。<br>
 <br>
-<a href="{{ config('app.url') }}:8000/api/auth/reminder/<?php echo $token; ?>">{{ config('app.url') }}:8000/api/auth/reminder/<?php echo $token; ?></a><br>
+<a href="{{ config('app.url') }}/api/auth/reminder/<?php echo $token; ?>">パスワードを変更する</a><br>
 <br>
 クリック後、アプリからログインを行ってください。<br>
 <br>
 ※このURLは登録から30分間有効です。<br>
+<br>
+<span>Rese</span>
