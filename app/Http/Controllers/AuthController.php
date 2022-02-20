@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Hash;
 use JWTAuth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class AuthController extends Controller
 {
@@ -125,7 +126,7 @@ class AuthController extends Controller
             if (User::where("email", $user->verify_email_address)->first()) {
                 // $params['result'] = "exist";
                 Log::info('Verify Exist: ' . $user->verify_email_address);
-                return redirect()->away('http://localhost:3000/registalready');
+                return redirect()->away('http://172.31.0.226/registalready');
                 //実際は登録の時点でemailのuniqueを確認しているので、このエラーは起きないはず
             } else {
                 // 仮メールアドレスを本メールに移動
@@ -146,11 +147,11 @@ class AuthController extends Controller
                 $user->save();
                 // $params['result'] = "success";
                 Log::info('Verify Success: ' . $user);
-                return redirect()->away('http://localhost:3000/thanks');
+                return redirect()->away('http://172.31.0.226/thanks');
             }
         } else {
             Log::info('Verify Not Found: token=' . $token);
-            return redirect()->away('http://localhost:3000/registerror');
+            return redirect()->away('http://172.31.0.226/registerror');
         }
     }
 
@@ -175,7 +176,7 @@ class AuthController extends Controller
                     ->to($email)
                     //configフォルダのmail.phpの中のfromのaddress。
                     ->from(config('mail.from.address'))
-                    ->subject('ユーザー登録の確認メール');
+                    ->subject('【Rese】ユーザー登録の確認メール');
             });
         }
         if ($type == 'reminder') {
@@ -183,7 +184,7 @@ class AuthController extends Controller
                 $message
                     ->to($email)
                     ->from(config('mail.from.address'))
-                    ->subject('パスワード変更確認メール');
+                    ->subject('【Rese】パスワード変更確認メール');
             });
         }
     }
@@ -286,9 +287,9 @@ class AuthController extends Controller
         $user = User::where('verify_token', $token)->where('verify_date', '>', $verify_limit)->first();
 
         if ($user) {
-            return redirect()->away('http://localhost:3000/input_password/?id='.$token);
+            return redirect()->away('http://172.31.0.226/input_password/?id='.$token);
         } else {
-            return redirect()->away('http://localhost:3000/registerror');
+            return redirect()->away('http://172.31.0.226/registerror');
         }
     }
 
@@ -364,7 +365,8 @@ class AuthController extends Controller
 
         if($TO !== []) {
 
-        Mail::send(['text' => 'jwt.emails.user_text'], $data, function ($message) use ($TO, $CC, $BCC, $subject) {
+        // Mail::send(['text' => 'jwt.emails.user_text'], $data, function ($message) use ($TO, $CC, $BCC, $subject) {
+        Mail::send(['jwt.emails.user_text'], $data, function ($message) use ($TO, $CC, $BCC, $subject) {
             $message
                 ->to($TO)
                 ->cc($CC)
@@ -432,8 +434,9 @@ class AuthController extends Controller
     {
         $picture = $request->file('pic_path');
         $picture_name = $picture->getClientOriginalName();
-        $picture->storeAs('public', $picture_name);
-        $pic_path = "http://127.0.0.1:8000/storage/" . $picture_name;
+        // $picture->storeAs('public', $picture_name);
+        Storage::disk('s3')->putFileAs('/', $picture, $picture_name);
+        $pic_path = "https://advance-pic-backet.s3.ap-northeast-1.amazonaws.com/" . $picture_name;
 
         $area_id = Area::where('area_name', $request->area_name)->first();
         $genre_id = Genre::where('genre_name', $request->genre_name)->first();
