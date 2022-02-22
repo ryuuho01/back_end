@@ -365,8 +365,8 @@ class AuthController extends Controller
 
         if($TO !== []) {
 
-        // Mail::send(['text' => 'jwt.emails.user_text'], $data, function ($message) use ($TO, $CC, $BCC, $subject) {
-        Mail::send(['jwt.emails.user_text'], $data, function ($message) use ($TO, $CC, $BCC, $subject) {
+        Mail::send(['text' => 'jwt.emails.user_text'], $data, function ($message) use ($TO, $CC, $BCC, $subject) {
+        // Mail::send(['jwt.emails.user_text'], $data, function ($message) use ($TO, $CC, $BCC, $subject) {
             $message
                 ->to($TO)
                 ->cc($CC)
